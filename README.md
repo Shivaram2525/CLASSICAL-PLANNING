@@ -1,4 +1,10 @@
 # ExpNo:10 Implementation of Classical Planning Algorithm
+
+```
+Name         : Shivaram M.
+Register No. : 212223040195
+```
+
 # Algorithm or Steps Involved:
 <ol>
   <li>Define the initial state</li>
@@ -45,4 +51,55 @@ print(plan)
 ```
 
 # Please Prepare Solution or Definition For the method find_plan(initial_state, goal_state, actions)
-<h3>You Can use any of the searching Strategies for planning and executing a sequence of actions.<br> You can also look in to the Code given in the Repository.</h3>
+## Program
+
+```
+state = {"At(Home)", "Have(Money)"}
+goal = {"Have(Milk)", "Have(Bread)"}
+
+actions = {
+    "GoTo(Store)": {
+        "pre": {"At(Home)"},
+        "add": {"At(Store)"},
+        "del": {"At(Home)"}
+    },
+    "Buy(Milk)": {
+        "pre": {"At(Store)", "Have(Money)"},
+        "add": {"Have(Milk)"},
+        "del": set()
+    },
+    "Buy(Bread)": {
+        "pre": {"At(Store)", "Have(Money)"},
+        "add": {"Have(Bread)"},
+        "del": set()
+    },
+    "Return(Home)": {
+        "pre": {"At(Store)"},
+        "add": {"At(Home)"},
+        "del": {"At(Store)"}
+    }
+}
+
+plan = []
+while not goal.issubset(state):
+    for act, vals in actions.items():
+        if vals["pre"].issubset(state):
+            if any(g not in state for g in vals["add"]):
+                plan.append(act)
+                state = (state - vals["del"]) | vals["add"]
+                print(f"Applied {act} → State: {state}")
+                break
+    else:
+        print("No applicable actions remaining — goal not reachable.")
+        break
+
+print("\nFinal Plan:")
+for i, p in enumerate(plan, 1):
+    print(f"{i}. {p}")
+```
+## Output
+<img width="1605" height="960" alt="Screenshot 2025-10-23 at 2 14 51 PM" src="https://github.com/user-attachments/assets/9c8ccd5b-d4cd-4109-ad28-a5a2cb8e9e8c" />
+<img width="1206" height="301" alt="output" src="https://github.com/user-attachments/assets/3ed46c9a-ebda-4b27-9115-9f4fb3990b71" />
+
+## Result
+A Classic planning algorithm has been implemented successfully in python.
